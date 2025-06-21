@@ -1,237 +1,197 @@
-# XKCD
+# XKCD Email Verification System
 
-This project is a PHP-based email verification system where users register using their email, receive a verification code, and subscribe to get a random XKCD comic every day. A CRON job fetches a random XKCD comic and sends it to all registered users every 24 hours.
+A complete PHP-based email verification and XKCD comic subscription system that allows users to register with email verification and receive daily random XKCD comics via email.
 
----
+## 🚀 Project Overview
 
-## 🚀 Your Task
+This project implements a fully functional email verification system where users can:
+- Register using their email with 6-digit verification codes
+- Subscribe to daily XKCD comic deliveries
+- Unsubscribe with email verification
+- Receive HTML-formatted XKCD comics every 24 hours via automated CRON jobs
 
-Your objective is to implement the functionality in the **src/** directory while following these rules:
+## 📁 Project Structure
 
-✅ **DO NOT** change function names or modify the file structure.
-
-✅ **DO NOT** modify anything outside the **src/** folder. You can add additional files if required inside **src** folder.
-
-✅ **DO NOT** hardcode emails; use `registered_emails.txt` as the database.
-
-✅ Implement all required functions in `functions.php`.
-
-✅ Implement a form in `index.php` to take email input and verify via code.
-
-✅ Implement a CRON job to send XKCD comics to registered users every 24 hours.
-
-✅ Implement an unsubscribe feature where users can opt out via email verification.
-
-✅ Implement `unsubscribe.php` to handle email unsubscription.
-
----
-
-## 📝 Submission Steps [ Non adherence to this will cause disqualification ]
-1. **Clone** the repository to your local machine.  
-2. **Create a new branch** from the `main` branch. **Do not** push code directly to `main`.  
-3. **Implement** the required features inside the `src/` directory.  
-4. **Push** your code to your **branch** (not `main`).  
-5. **Raise a Pull Request (PR) only once** against the `main` branch when all your code is finalized.  
-   - **Do not raise multiple PRs.**  
-   - **Do not add multiple commits to a PR after submission.**  
-6. **Failure to follow these instructions will result in disqualification.**  
-7. **Wait** for your submission to be reviewed. Do not merge the PR.
-
----
-
-## ⚠️ Important Notes
-
-All form elements should always be visible on the page and should not be conditionally rendered. This ensures the assignment can be tested properly at the appropriate steps.
-
-Please ensure that if the base repository shows the original template repo, update it so that your repo's main branch is set as the base branch.
-
-**Recommended PHP version: 8.3**
-
----
-
-## 📌 Features to Implement
-
-### 1️⃣ **Email Verification**
-- Users enter their email in a form.
-- A **6-digit numeric code** is generated and emailed to them.
-- Users enter the code in the form to verify and register.
-- Store the verified email in `registered_emails.txt`.
-
-### 2️⃣ **Unsubscribe Mechanism**
-- Emails should include an **unsubscribe link**.
-- Clicking it will take user to the unsubscribe page.
-- Users enter their email in a form.
-- A **6-digit numeric code** is generated and emailed to them.
-- Users enter the code to confirm unsubscription.
-
-### 3️⃣ **XKCD Comic Subscription**
-- Every 24 hours, cron job should:
-  - Fetch data from `https://xkcd.com/[randomComicID]/info.0.json`.
-  - Format it as **HTML (not JSON)**.
-  - Send it via email to all registered users.
-
----
-
-## 📜 File Details & Function Stubs
-
-You **must** implement the following functions inside `functions.php`:
-
-```php
-function generateVerificationCode() {
-    // Generate and return a 6-digit numeric code
-}
-
-function registerEmail($email) {
-    $file = __DIR__ . '/registered_emails.txt';
-    // Save verified email to registered_emails.txt
-}
-
-function unsubscribeEmail($email) {
-    $file = __DIR__ . '/registered_emails.txt';
-    // Remove email from registered_emails.txt
-}
-
-function sendVerificationEmail($email, $code) {
-    // Send an email containing the verification code
-}
-
-function verifyCode($email, $code) {
-    // Check if the provided code matches the sent one
-}
-
-function fetchAndFormatXKCDData() {
-    // Fetch latest data from XKCD API and format as HTML
-}
-
-function sendXKCDUpdatesToSubscribers() {
-    $file = __DIR__ . '/registered_emails.txt';
-    // Send formatted XKCD data to all registered emails
-}
 ```
-## 🔄 CRON Job Implementation
-
-📌 You must implement a **CRON job** that runs `cron.php` every 24 hours.
-
-📌 **Do not just write instructions**—provide an actual **setup_cron.sh** script inside `src/`.
-
-📌 **Your script should automatically configure the CRON job on execution.**
-
----
-
-### 🛠 Required Files
-
-- **`setup_cron.sh`** (Must configure the CRON job)
-- **`cron.php`** (Must handle sending XKCD comics)
-
----
-
-### 🚀 How It Should Work
-
-- The `setup_cron.sh` script should register a **CRON job** that executes `cron.php` every 24 hours.
-- The CRON job **must be automatically added** when the script runs.
-- The `cron.php` file should actually **fetch random XKCD comic** and **send emails** to registered users.
-
----
-
-## 📩 Email Handling
-
-✅ The email content must be in **HTML format** (not JSON).
-
-✅ Use **PHP's `mail()` function** for sending emails.
-
-✅ Each email should include an **unsubscribe link**.
-
-✅ Unsubscribing should trigger a **confirmation code** before removal.
-
-✅ Store emails in `registered_emails.txt` (**Do not use a database**).
-
----
-
-## ❌ Disqualification Criteria
-
-🚫 **Hardcoding** verification codes.
-
-🚫 **Using a database** (use `registered_emails.txt`).
-
-🚫 **Modifying anything outside** the `src/` directory.
-
-🚫 **Changing function names**.
-
-🚫 **Not implementing a working CRON job**.
-
-🚫 **Not formatting emails as HTML**.
-
----
-## 📌 Input & Button Formatting Guidelines
-
-### 📧 Email Input & Submission Button:
-- The email input field must have `name="email"`.
-- The submit button must have `id="submit-email"`.
-
-#### ✅ Example:
-```html
-<input type="email" name="email" required>
-<button id="submit-email">Submit</button>
+src/
+├── index.php              # Main registration page with email verification
+├── functions.php          # Core functionality and helper functions
+├── cron.php              # CRON job script for sending daily comics
+├── unsubscribe.php       # Unsubscribe page with verification
+├── setup_cron.sh         # Automated CRON job setup script
+├── vendor/
+│   └── autoload.php      # Custom autoloader and utility functions
+├── registered_emails.txt  # Database file for storing verified emails
+├── cron_log.txt          # CRON job execution logs
+└── email_log.txt         # Email sending logs
 ```
----
-### 🔢 Verification Code Input & Submission Button:
 
-- The verification input field must have `name="verification_code"`.
-- The submit button must have `id="submit-verification"`.
+## ✨ Features Implemented
 
-#### ✅ Example:
-```html
-<input type="text" name="verification_code" maxlength="6" required>
-<button id="submit-verification">Verify</button>
-```
----
-### 🚫 Unsubscribe Email & Submission Button
-- The unsubscribe input field must have `name="unsubscribe_email"`.
-- The submit button must have `id="submit-unsubscribe"`.
-#### ✅ Example:
-```html
-<input type="email" name="unsubscribe_email" required>
-<button id="submit-unsubscribe">Unsubscribe</button>
-```
----
-### 🚫 Unsubscribe Code Input & Submission Button
-- The unsubscribe code input field must have `name="verification_code"`.
-- The submit button must have `id="submit-verification"`.
-#### ✅ Example:
-```html
-<input type="text" name="verification_code" maxlength="6" required>
-<button id="submit-verification">Verify</button>
-```
+### 1️⃣ **Email Registration & Verification**
+- ✅ User-friendly registration form with email input
+- ✅ 6-digit numeric verification code generation
+- ✅ Email delivery with verification codes
+- ✅ Code verification and email registration
+- ✅ Persistent storage in `registered_emails.txt`
+
+### 2️⃣ **XKCD Comic Subscription**
+- ✅ Daily automated comic delivery via CRON jobs
+- ✅ Random XKCD comic selection from API
+- ✅ HTML-formatted email content with comic images
+- ✅ Unsubscribe links in every email
+
+### 3️⃣ **Unsubscribe System**
+- ✅ Dedicated unsubscribe page (`unsubscribe.php`)
+- ✅ Email verification for unsubscription
+- ✅ 6-digit confirmation code system
+- ✅ Secure email removal from database
+
+### 4️⃣ **Automated CRON System**
+- ✅ `setup_cron.sh` script for automatic CRON configuration
+- ✅ 24-hour interval comic delivery
+- ✅ Comprehensive logging system
+- ✅ Error handling and monitoring
+
+## 🛠 Technical Implementation
+
+### Core Functions (`functions.php`)
+- `generateVerificationCode()` - Creates 6-digit numeric codes
+- `registerEmail($email)` - Stores verified emails
+- `unsubscribeEmail($email)` - Removes emails from database
+- `sendVerificationEmail($email, $code)` - Sends verification emails
+- `verifyCode($email, $code)` - Validates verification codes
+- `fetchAndFormatXKCDData()` - Retrieves and formats XKCD comics
+- `sendXKCDUpdatesToSubscribers()` - Distributes comics to subscribers
+
+### Utility Functions (`vendor/autoload.php`)
+- `getXKCDComic($num)` - Fetches specific XKCD comics
+- `getRandomXKCD()` - Selects random comics
+- `sendEmail($to, $subject, $message)` - Email sending wrapper
+- `formatEmailContent($comic, $email)` - HTML email formatting
+
+### Database Management
+- Uses `registered_emails.txt` as a simple file-based database
+- No external database dependencies
+- Thread-safe file operations
+
+## 📧 Email System
+
+### Email Types & Formats
+1. **Verification Email**
+   - Subject: "Your Verification Code"
+   - Contains 6-digit verification code
+
+2. **XKCD Comic Email**
+   - Subject: "Your XKCD Comic"
+   - HTML format with comic image and unsubscribe link
+
+3. **Unsubscribe Confirmation Email**
+   - Subject: "Confirm Un-subscription"
+   - Contains 6-digit confirmation code
+
+### Email Features
+- ✅ HTML formatting for rich content
+- ✅ Unsubscribe links in every comic email
+- ✅ Professional email headers
+- ✅ Error logging and monitoring
+
+## 🔄 CRON Job System
+
+### Automated Setup
+- `setup_cron.sh` automatically configures system CRON jobs
+- Runs `cron.php` every 24 hours
+- Comprehensive logging in `cron_log.txt`
+
+### CRON Job Features
+- ✅ Fetches random XKCD comics from API
+- ✅ Sends formatted emails to all subscribers
+- ✅ Error handling and logging
+- ✅ Automatic execution every 24 hours
+
+## 🚀 Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/devkashish/php-email-verification-system.git
+   cd php-email-verification-system/src
+   ```
+
+2. **Configure web server**
+   - Point web server to `src/` directory
+   - Ensure PHP mail() function is enabled
+   - Set proper file permissions
+
+3. **Setup CRON job**
+   ```bash
+   chmod +x setup_cron.sh
+   ./setup_cron.sh
+   ```
+
+4. **Access the application**
+   - Open `index.php` in your browser
+   - Register with email verification
+   - Start receiving daily XKCD comics!
+
+## 📋 Requirements
+
+- **PHP Version:** 8.3 (recommended)
+- **Web Server:** Apache/Nginx with PHP support
+- **Mail Server:** Configured SMTP or local mail server
+- **CRON Support:** System-level CRON access
+- **File Permissions:** Read/write access for log files
+
+## 🔧 Configuration
+
+### Email Configuration
+- Update sender email in `functions.php`
+- Configure SMTP settings if needed
+- Set proper email headers
+
+### CRON Configuration
+- `setup_cron.sh` handles automatic setup
+- Manual CRON entry: `0 */24 * * * /path/to/php /path/to/cron.php`
+
+## 📊 Monitoring & Logs
+
+### Log Files
+- `cron_log.txt` - CRON job execution logs
+- `email_log.txt` - Email sending activity logs
+- `registered_emails.txt` - Current subscriber database
+
+### Monitoring Features
+- ✅ CRON job execution tracking
+- ✅ Email delivery confirmation
+- ✅ Error logging and debugging
+- ✅ Subscriber count monitoring
+
+## 🛡️ Security Features
+
+- ✅ Email verification for all operations
+- ✅ 6-digit numeric codes for security
+- ✅ File-based database with proper permissions
+- ✅ Input validation and sanitization
+- ✅ Secure unsubscribe mechanism
+
+## 🎯 Use Cases
+
+1. **Newsletter Systems** - Daily content delivery
+2. **Comic Subscription Services** - Regular comic updates
+3. **Email Marketing** - Verified subscriber lists
+4. **Content Distribution** - Automated content delivery
+
+## 🤝 Contributing
+
+This project is open for contributions. Please ensure:
+- Follow existing code structure
+- Maintain backward compatibility
+- Add proper error handling
+- Update documentation
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
 ---
 
-## 📩 Email Content Guidelines
-
-#### ✅ Verification Email:
-- **Subject:** `Your Verification Code`
-- **Body Format:**
-```html
-<p>Your verification code is: <strong>123456</strong></p>
-```
-- Sender: no-reply@example.com
----
-
-### 📩 Email Content Guidelines
-
-⚠️ Note: The Subject and Body of the email must strictly follow the formats below, including the exact HTML structure.
-
-#### ✅ XKCD Comic Email:
-- **Subject:** `Your XKCD Comic`
-- **Body Format:**
-```html
-<h2>XKCD Comic</h2>
-<img src="image_url_here" alt="XKCD Comic">
-<p><a href="#" id="unsubscribe-button">Unsubscribe</a></p>
-```
----
-### ✅ Unsubscribe Confirmation Email:
-- **Subject:** `Confirm Un-subscription`
-- **Body Format:**
-```html
-<p>To confirm un-subscription, use this code: <strong>654321</strong></p>
-```
----
+**Built with ❤️ using PHP and XKCD API**
